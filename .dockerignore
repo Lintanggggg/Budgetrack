@@ -1,0 +1,14 @@
+node_modules
+.git
+.gitignore
+.env
+storage/logs/*.log
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+.idea
+.vscode
+tests
+Dockerfile
+docker-compose.yml
+README.md

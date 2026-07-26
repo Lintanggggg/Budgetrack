@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>BudgetRack Admin - @yield('title')</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; }
+        .sidebar {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #b71c1c 0%, #c62828 100%);
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+        .sidebar .nav-link {
+            color: rgba(255,255,255,0.8);
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin: 2px 10px;
+            transition: all 0.3s;
+        }
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+        }
+        .sidebar .nav-link i { margin-right: 10px; }
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        .navbar-top {
+            background: #fff;
+            border-bottom: 1px solid #dee2e6;
+            padding: 12px 20px;
+            margin-left: 250px;
+            position: sticky;
+            top: 0;
+            z-index: 99;
+        }
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        .brand-logo {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+{{-- Sidebar Admin --}}
+<div class="sidebar">
+    <div class="brand-logo">
+        <h5 class="text-white mb-0 fw-bold">
+            <i class="bi bi-shield-lock me-2"></i>BudgetRack
+        </h5>
+        <small class="text-white-50">Admin Panel</small>
+    </div>
+    <nav class="nav flex-column mt-2">
+        <a href="{{ route('admin.users.index') }}"
+           class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+            <i class="bi bi-people"></i> Manajemen User
+        </a>
+        <a href="{{ route('admin.logs.index') }}"
+            class="nav-link {{ request()->routeIs('admin.logs.*') ? 'active' : '' }}">
+            <i class="bi bi-journal-text"></i> Aktivitas Log
+        </a>
+    </nav>
+</div>
+
+{{-- Top Navbar --}}
+<div class="navbar-top d-flex justify-content-between align-items-center">
+    <h6 class="mb-0 fw-semibold text-muted">@yield('title')</h6>
+    <div class="dropdown">
+        <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            <i class="bi bi-person-circle me-1"></i>{{ auth()->user()->name }}
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="dropdown-item text-danger">
+                        <i class="bi bi-box-arrow-right me-2"></i>Logout
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</div>
+
+{{-- Main Content --}}
+<div class="main-content mt-3">
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-circle me-2"></i>{{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    @endif
+
+    @yield('content')
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@stack('scripts')
+</body>
+</html>

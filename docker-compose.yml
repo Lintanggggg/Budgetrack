@@ -1,0 +1,14 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: budgetrack-app
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./storage:/var/www/storage
+      - ./database:/var/www/database
+    env_file:
+      - .env.docker
